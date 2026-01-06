@@ -1,0 +1,9 @@
+{
+    "name": "youco/ma-bagnole-v2",
+    "description": "car rental",
+    "autoload": {
+        "psr-4": {
+            "Youco\\MaBagnoleV2\\": "App/"
+        }
+    }
+}
