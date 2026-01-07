@@ -54,3 +54,54 @@ CREATE TABLE avis(
     FOREIGN KEY (id_car) REFERENCES car(id_car),
     FOREIGN KEY (id_reservation) REFERENCES reservation(id_reservation)
 );
+
+CREATE TABLE theme(
+    id_theme INT PRIMARY KEY AUTO_INCREMENT,
+    titre VARCHAR(100),
+    image VARCHAR(200),
+);
+
+CREATE TABLE article(
+    id_article INT PRIMARY KEY AUTO_INCREMENT,
+    titre VARCHAR(100),
+    texte TEXT,
+    image LONGBLOB,
+    video LONGBLOB,
+    id_theme INT,
+    FOREIGN KEY (id_theme) REFERENCES theme(id_theme),
+
+);
+
+CREATE TABLE comment(
+    id_comment INT PRIMARY KEY AUTO_INCREMENT,
+    texte TEXT,
+    id_client INT,
+    id_article INT,
+    FOREIGN KEY (id_client) REFERENCES utilisateur(id_user),
+    FOREIGN KEY (id_article) REFERENCES article(id_article)
+
+);
+
+CREATE TABLE tag(
+    id_tag INT PRIMARY KEY AUTO_INCREMENT,
+    titre VARCHAR(80),
+
+);
+
+CREATE TABLE article_tag(
+    id_article INT,
+    id_tag INT,
+    PRIMARY KEY (id_article,id_tag),
+    FOREIGN KEY (id_article) REFERENCES article(id_article),
+    FOREIGN KEY (id_tag) REFERENCES tag(id_tag)
+
+);
+
+CREATE TABLE favoris(
+    id_favoris INT PRIMARY KEY AUTO_INCREMENT,
+    id_article INT,
+    id_client INT,
+    FOREIGN KEY (id_article) REFERENCES article(id_article),
+    FOREIGN KEY (id_client) REFERENCES utilisateur(id_user)
+
+);
