@@ -65,11 +65,13 @@ CREATE TABLE article(
     id_article INT PRIMARY KEY AUTO_INCREMENT,
     titre VARCHAR(100),
     texte TEXT,
+    status VARCHAR(50) DEFAULT 'PENDING',
     image LONGBLOB,
     video LONGBLOB,
     id_theme INT,
+    id_client INT,
     FOREIGN KEY (id_theme) REFERENCES theme(id_theme),
-
+    FOREIGN KEY (id_client) REFERENCES utilisateur(id_client)
 );
 
 CREATE TABLE comment(
