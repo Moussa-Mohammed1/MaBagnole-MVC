@@ -20,7 +20,7 @@ function getStatusBadge($status)
     $badges = [
         'available' => '<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold bg-emerald-50 dark:bg-emerald-900/20 text-emerald-600 dark:text-emerald-400 border border-emerald-100 dark:border-emerald-800/50"><span class="size-1.5 rounded-full bg-emerald-500"></span>Available</span>',
         'rented' => '<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 border border-blue-100 dark:border-blue-800/50"><span class="size-1.5 rounded-full bg-blue-500"></span>Rented</span>',
-        ];
+    ];
     return $badges[$status] ?? $badges['available'];
 }
 ?>
@@ -113,6 +113,18 @@ function getStatusBadge($status)
                 <span class="material-symbols-outlined text-slate-500 dark:text-slate-400 group-hover:text-primary">star</span>
                 <span class="text-sm font-medium">Reviews</span>
             </a>
+            <div class="flex flex-col gap-1">
+                <a class="flex items-center gap-3 px-3 py-2.5 rounded-lg bg-primary/10 text-primary dark:text-blue-400" href="#">
+                    <span class="material-symbols-outlined text-[20px] fill-1">menu_book</span>
+                    <span class="text-sm font-bold">Blog</span>
+                </a>
+                <!-- Submenu -->
+                <div class="ml-9 flex flex-col border-l border-slate-200 dark:border-slate-700 pl-3 gap-1">
+                    <a class="px-3 py-1.5 text-sm font-medium text-slate-500 dark:text-slate-400 hover:text-primary dark:hover:text-blue-400" href="#">Posts</a>
+                    <a class="px-3 py-1.5 text-sm font-bold text-primary dark:text-blue-400" href="#">Tags</a>
+                    <a class="px-3 py-1.5 text-sm font-medium text-slate-500 dark:text-slate-400 hover:text-primary dark:hover:text-blue-400" href="#">Categories</a>
+                </div>
+            </div>
             <a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors group mt-auto" href="#">
                 <span class="material-symbols-outlined text-slate-500 dark:text-slate-400 group-hover:text-red-500">logout</span>
                 <span class="text-sm font-medium group-hover:text-red-500">Log Out</span>
