@@ -3,7 +3,7 @@
     "description": "car rental",
     "autoload": {
         "psr-4": {
-            "Youco\\MaBagnoleV2\\": "App/"
+            "App\\": "App/"
         }
     }
 }
