@@ -25,7 +25,7 @@ class Theme
         $st = $pdo->prepare($sql);
         $st->execute([$this->titre, $this->image]);
     }
-    public function updateTheme(int $id_theme, string $titre, string $image)
+    public static function updateTheme(int $id_theme, string $titre, string $image)
     {
         $pdo = Database::getInstance()->getConnection();
         $sql = 'UPDATE theme SET titre = ?, image = ? WHERE id_theme = ?';
@@ -33,7 +33,7 @@ class Theme
         $st->execute([$titre, $image, $id_theme]);
     }
 
-    public function deleteTheme(int $id_theme) : void
+    public static function deleteTheme(int $id_theme) : void
     {
         $pdo = Database::getInstance()->getConnection();
         $sql = 'DELETE FROM theme WHERE id_theme = ?';
