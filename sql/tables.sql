@@ -70,6 +70,7 @@ CREATE TABLE article(
     video LONGBLOB,
     id_theme INT,
     id_client INT,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (id_theme) REFERENCES theme(id_theme),
     FOREIGN KEY (id_client) REFERENCES utilisateur(id_user)
 );
