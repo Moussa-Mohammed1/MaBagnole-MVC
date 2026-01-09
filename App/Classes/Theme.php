@@ -44,7 +44,7 @@ class Theme
     public static function getAllThemes() : ?array {
         $pdo = Database::getInstance()->getConnection();
         $sql = 'SELECT  t.image, t.id_theme, 
-                        t.titre, COUNT(a.id_theme) AS articles
+                        t.titre, COUNT(a.id_theme) 
                 FROM theme t
                 LEFT JOIN article a 
                 ON t.id_theme = a.id_theme

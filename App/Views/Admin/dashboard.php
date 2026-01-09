@@ -100,19 +100,32 @@ $recentReservations = array_slice(Reservation::getAllReservations(), 0, 5);
             </div>
         </div>
         <nav class="flex-1 overflow-y-auto p-4 flex flex-col gap-2">
-            <a class="flex items-center gap-3 px-3 py-2.5 rounded-lg bg-primary/10 text-primary dark:bg-primary/20 dark:text-primary-400 transition-colors" href="dashboard.php">
-                <span class="material-symbols-outlined filled">dashboard</span>
+            <a class="flex items-center gap-3 px-3 py-2.5 rounded-lg bg-primary/10 text-primary dark:bg-primary/20 dark:text-primary-400 transition-colors group" href="./dashboard.php">
+                <span class="material-symbols-outlined fill-1">dashboard</span>
                 <span class="text-sm font-bold">Dashboard</span>
             </a>
-            <a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors group" href="car.php">
+            <a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors group" href="./car.php">
                 <span class="material-symbols-outlined text-slate-500 dark:text-slate-400 group-hover:text-primary">directions_car</span>
                 <span class="text-sm font-medium">Vehicles</span>
             </a>
-            <a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors group" href="category.php">
+            <div class="flex flex-col gap-1">
+                <a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors group" href="./Community/dashboard.php">
+                    <span class="material-symbols-outlined text-[20px] text-slate-500 dark:text-slate-400 group-hover:text-primary">menu_book</span>
+                    <span class="text-sm font-medium group-hover:text-primary">Blog</span>
+                </a>
+                <!-- Submenu -->
+                <div class="ml-9 flex flex-col border-l border-slate-200 dark:border-slate-700 pl-3 gap-1">
+                    <a class="px-3 py-1.5 text-sm font-medium text-slate-500 dark:text-slate-400 hover:text-primary dark:hover:text-blue-400" href="./Community/articles.php">Articles</a>
+                    <a class="px-3 py-1.5 text-sm font-medium text-slate-500 dark:text-slate-400 hover:text-primary dark:hover:text-blue-400" href="./Community/tags.php">Tags</a>
+                    <a class="px-3 py-1.5 text-sm font-medium text-slate-500 dark:text-slate-400 hover:text-primary dark:hover:text-blue-400" href="./Community/theme.php">Themes</a>
+                    <a class="px-3 py-1.5 text-sm font-medium text-slate-500 dark:text-slate-400 hover:text-primary dark:hover:text-blue-400" href="./Community/Comments.php">Commentaires</a>
+                </div>
+            </div>
+            <a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors group" href="./category.php">
                 <span class="material-symbols-outlined text-slate-500 dark:text-slate-400 group-hover:text-primary">category</span>
                 <span class="text-sm font-medium">Categories</span>
             </a>
-            <a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors group" href="reservations.php">
+            <a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors group" href="./reservations.php">
                 <span class="material-symbols-outlined text-slate-500 dark:text-slate-400 group-hover:text-primary">calendar_today</span>
                 <span class="text-sm font-medium">Reservations</span>
             </a>
@@ -120,7 +133,7 @@ $recentReservations = array_slice(Reservation::getAllReservations(), 0, 5);
                 <span class="material-symbols-outlined text-slate-500 dark:text-slate-400 group-hover:text-primary">star</span>
                 <span class="text-sm font-medium">Reviews</span>
             </a>
-            <a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors group mt-auto" href="#">
+            <a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors group mt-auto" href="./../../Controllers/AuthController.php?action=logout">
                 <span class="material-symbols-outlined text-slate-500 dark:text-slate-400 group-hover:text-red-500">logout</span>
                 <span class="text-sm font-medium group-hover:text-red-500">Log Out</span>
             </a>
