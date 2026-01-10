@@ -1,3 +1,20 @@
+<?php
+session_start();
+require_once './../../../../vendor/autoload.php';
+
+
+use App\Classes\Tag;
+
+$logged = $_SESSION['logged'];
+
+$id_theme = $_GET['id_theme'] ?? '';
+if (empty($id_theme)) {
+    header('Location: theme.php');
+    exit();
+}
+
+?>
+
 <!DOCTYPE html>
 
 <html class="light" lang="en">
@@ -37,28 +54,56 @@
 
 <body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-white antialiased">
     <div class="relative flex min-h-screen w-full flex-col overflow-x-hidden">
-        <!-- Header -->
-        <header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 px-10 py-3 sticky top-0 z-50">
-            <div class="flex items-center gap-4 text-slate-900 dark:text-white">
-                <div class="size-8 text-primary">
-                    <span class="material-symbols-outlined text-3xl">directions_car</span>
-                </div>
-                <h2 class="text-slate-900 dark:text-white text-lg font-bold leading-tight tracking-[-0.015em]">MaBagnole</h2>
-            </div>
-            <div class="flex flex-1 justify-end gap-8">
-                <div class="hidden md:flex items-center gap-9">
-                    <a class="text-slate-900 dark:text-white text-sm font-medium leading-normal hover:text-primary transition-colors" href="../cars.php">Home</a>
-                    <a class="text-slate-900 dark:text-white text-sm font-medium leading-normal hover:text-primary transition-colors" href="../cars.php">Fleet</a>
-                    <a class="text-primary text-sm font-bold leading-normal" href="ArticlesList.php">Blog</a>
-                    <a class="text-slate-900 dark:text-white text-sm font-medium leading-normal hover:text-primary transition-colors" href="../dashboard.php">My Bookings</a>
+        <!-- Navigation -->
+        <header class="sticky top-0 z-50 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-800">
+            <div class="px-4 md:px-10 py-3 flex items-center justify-between whitespace-nowrap">
+                <div class="flex items-center gap-8">
+                    <a class="flex items-center gap-3 group" href="../cars.php">
+                        <h2 class="text-slate-900 dark:text-white text-xl font-bold tracking-tight">MaBagnole</h2>
+                    </a>
+                    <nav class="hidden md:flex items-center gap-6">
+                        <a class="text-slate-600 dark:text-slate-300 hover:text-primary dark:hover:text-primary text-sm font-medium transition-colors" href="../cars.php">Fleet</a>
+                        <a class="text-slate-600 dark:text-slate-300 hover:text-primary dark:hover:text-primary text-sm font-medium transition-colors" href="../dashboard.php">My Bookings</a>
+                        <!-- Community Dropdown -->
+                        <div class="relative group">
+                            <button class="flex items-center gap-2 text-slate-600 dark:text-slate-300 hover:text-primary dark:hover:text-primary text-sm font-medium transition-colors">
+                                Community
+                                <span class="material-symbols-outlined text-[18px] group-hover:rotate-180 transition-transform duration-200">expand_more</span>
+                            </button>
+                            <!-- Dropdown Menu -->
+                            <div class="absolute left-0 mt-1 w-48 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 py-2 z-50">
+
+                                <a href="theme.php" class="block px-4 py-2 text-sm text-slate-700 dark:text-slate-300 hover:bg-primary/10 hover:text-primary dark:hover:bg-primary/20 transition-colors">
+                                    <span class="material-symbols-outlined text-[18px] inline mr-2 align-middle">palette</span>
+                                    Themes
+                                </a>
+                                <a href="favoris.php" class="block px-4 py-2 text-sm text-slate-700 dark:text-slate-300 hover:bg-primary/10 hover:text-primary dark:hover:bg-primary/20 transition-colors">
+                                    <span class="material-symbols-outlined text-[18px] inline mr-2 align-middle">favorite</span>
+                                    Favorites
+                                </a>
+                                <hr class="border-slate-200 dark:border-slate-700 my-1">
+                                <a href="ArticlesList.php#comments" class="block px-4 py-2 text-sm text-slate-700 dark:text-slate-300 hover:bg-primary/10 hover:text-primary dark:hover:bg-primary/20 transition-colors">
+                                    <span class="material-symbols-outlined text-[18px] inline mr-2 align-middle">chat_bubble</span>
+                                    Comments
+                                </a>
+                            </div>
+                        </div>
+                    </nav>
                 </div>
                 <div class="flex items-center gap-4">
-                    <button class="flex items-center justify-center rounded-full size-10 bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-white hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors">
-                        <span class="material-symbols-outlined text-xl">notifications</span>
-                    </button>
-                    <div class="size-10 bg-slate-200 rounded-full overflow-hidden" data-alt="User profile avatar placeholder with abstract gradient">
-                        <div class="w-full h-full bg-gradient-to-tr from-blue-400 to-purple-500"></div>
+                    <div class="flex items-center gap-3">
+                        <div class="hidden sm:flex flex-col items-end">
+                            <span class="text-sm font-bold text-slate-900 dark:text-white"><?= $logged->nom ?></span>
+                            <span class="text-xs text-slate-500 dark:text-slate-400"><?= $logged->email ?></span>
+                        </div>
+                        <div class="size-10 rounded-full bg-gradient-to-br from-primary to-blue-600 flex items-center justify-center text-white font-bold">
+                            <?= $logged->nom[0] ?>
+                        </div>
                     </div>
+                    <a href="../../auth/login.php" class="flex items-center gap-2 px-4 py-2 rounded-lg text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
+                        <span class="material-symbols-outlined text-[20px]">logout</span>
+                        <span class="hidden sm:inline text-sm font-medium">Logout</span>
+                    </a>
                 </div>
             </div>
         </header>
@@ -80,112 +125,57 @@
                             <p class="text-slate-500 dark:text-slate-400 text-base font-normal leading-normal">Share your road trip experiences with the MaBagnole community.</p>
                         </div>
                     </div>
-                    <!-- Main Form Container -->
-                    <div class="flex flex-col gap-8 bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 p-6 md:p-10">
-                        <!-- Title Input -->
+
+                    <form action="./.././../../Controllers/ArticleController.php?action=add" method="POST"
+                        class="flex flex-col gap-8 bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 p-6 md:p-10">
+
                         <div class="flex flex-col gap-2">
                             <label class="text-slate-900 dark:text-white text-sm font-bold leading-normal">Article Title</label>
-                            <input class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-slate-900 dark:text-white focus:outline-0 focus:ring-2 focus:ring-primary/50 border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 h-14 placeholder:text-slate-400 px-4 text-xl font-semibold leading-normal" placeholder="Enter a catchy headline..." value="" />
+                            <input name="titre" required class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-slate-900 dark:text-white focus:outline-0 focus:ring-2 focus:ring-primary/50 border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 h-14 placeholder:text-slate-400 px-4 text-xl font-semibold leading-normal" placeholder="Enter a catchy headline..." value="" />
                         </div>
-                        <!-- Cover Image Uploader -->
-                        <div class="flex flex-col gap-2">
-                            <label class="text-slate-900 dark:text-white text-sm font-bold leading-normal">Cover Image</label>
-                            <div class="flex flex-col items-center gap-6 rounded-lg border-2 border-dashed border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50 px-6 py-10 hover:border-primary transition-colors cursor-pointer group">
-                                <div class="flex max-w-[480px] flex-col items-center gap-2">
-                                    <span class="material-symbols-outlined text-4xl text-slate-400 group-hover:text-primary transition-colors">image</span>
-                                    <p class="text-slate-900 dark:text-white text-base font-bold leading-tight text-center">Drag &amp; Drop or Click to Upload</p>
-                                    <p class="text-slate-500 dark:text-slate-400 text-sm font-normal text-center">Recommended size: 1200x630px (JPG, PNG)</p>
-                                </div>
-                                <button class="flex items-center justify-center overflow-hidden rounded-lg h-9 px-4 bg-white dark:bg-slate-700 border border-slate-200 dark:border-slate-600 text-slate-700 dark:text-slate-200 text-sm font-bold shadow-sm hover:bg-slate-50 dark:hover:bg-slate-600">
-                                    Browse Files
-                                </button>
-                            </div>
-                        </div>
-                        <!-- Rich Text Editor -->
+                        <input type="hidden" name="id_theme" value="<?= $id_theme ?>">
+                        <input type="hidden" name="id_client" value="<?= $logged->id_user ?>">
                         <div class="flex flex-col gap-2">
                             <label class="text-slate-900 dark:text-white text-sm font-bold leading-normal">Content</label>
                             <div class="border border-slate-200 dark:border-slate-700 rounded-lg overflow-hidden bg-white dark:bg-slate-900 flex flex-col min-h-[400px]">
-                                <!-- Toolbar -->
-                                <div class="flex flex-wrap items-center gap-1 border-b border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 p-2">
-                                    <div class="flex items-center gap-1 pr-2 border-r border-slate-200 dark:border-slate-700">
-                                        <button class="p-1.5 rounded hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 transition-colors" title="Bold">
-                                            <span class="material-symbols-outlined text-[20px]">format_bold</span>
-                                        </button>
-                                        <button class="p-1.5 rounded hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 transition-colors" title="Italic">
-                                            <span class="material-symbols-outlined text-[20px]">format_italic</span>
-                                        </button>
-                                        <button class="p-1.5 rounded hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 transition-colors" title="Underline">
-                                            <span class="material-symbols-outlined text-[20px]">format_underlined</span>
-                                        </button>
-                                    </div>
-                                    <div class="flex items-center gap-1 px-2 border-r border-slate-200 dark:border-slate-700">
-                                        <button class="p-1.5 rounded hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 transition-colors" title="H1">
-                                            <span class="material-symbols-outlined text-[20px]">format_h1</span>
-                                        </button>
-                                        <button class="p-1.5 rounded hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 transition-colors" title="H2">
-                                            <span class="material-symbols-outlined text-[20px]">format_h2</span>
-                                        </button>
-                                    </div>
-                                    <div class="flex items-center gap-1 px-2 border-r border-slate-200 dark:border-slate-700">
-                                        <button class="p-1.5 rounded hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 transition-colors" title="Bullet List">
-                                            <span class="material-symbols-outlined text-[20px]">format_list_bulleted</span>
-                                        </button>
-                                        <button class="p-1.5 rounded hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 transition-colors" title="Ordered List">
-                                            <span class="material-symbols-outlined text-[20px]">format_list_numbered</span>
-                                        </button>
-                                    </div>
-                                    <div class="flex items-center gap-1 pl-2">
-                                        <button class="p-1.5 rounded hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 transition-colors" title="Link">
-                                            <span class="material-symbols-outlined text-[20px]">link</span>
-                                        </button>
-                                        <button class="p-1.5 rounded hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 transition-colors" title="Insert Image">
-                                            <span class="material-symbols-outlined text-[20px]">add_photo_alternate</span>
-                                        </button>
-                                        <button class="p-1.5 rounded hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 transition-colors" title="Insert Video">
-                                            <span class="material-symbols-outlined text-[20px]">movie</span>
-                                        </button>
-                                    </div>
-                                </div>
-                                <!-- Editor Area -->
-                                <textarea class="w-full flex-1 p-4 text-base text-slate-700 dark:text-slate-300 bg-transparent resize-none outline-none leading-relaxed" placeholder="Start telling your story here..."></textarea>
+
+                                <textarea name="texte" required class="w-full flex-1 p-4 text-base text-slate-700 dark:text-slate-300 bg-transparent resize-none outline-none leading-relaxed" placeholder="Start telling your story here..."></textarea>
                             </div>
                         </div>
-                        <!-- Tags Input -->
                         <div class="flex flex-col gap-3">
-                            <label class="text-slate-900 dark:text-white text-sm font-bold leading-normal">Tags</label>
+                            <label class="text-slate-900 dark:text-white text-sm font-bold leading-normal">
+                                <span class="flex items-center gap-2">
+                                    <span class="material-symbols-outlined text-[18px]">label</span>
+                                    Tags
+                                </span>
+                            </label>
                             <div class="flex flex-col gap-3">
-                                <div class="flex flex-wrap gap-2 items-center min-h-[48px] p-2 border border-slate-200 dark:border-slate-700 rounded-lg bg-slate-50 dark:bg-slate-800 focus-within:ring-2 focus-within:ring-primary/50 focus-within:border-primary">
-                                    <!-- Chips -->
-                                    <div class="flex items-center gap-1 bg-primary/10 dark:bg-primary/20 text-primary px-3 py-1 rounded-full text-sm font-semibold">
-                                        #RoadTrip
-                                        <button class="hover:text-primary/70 transition-colors flex items-center">
-                                            <span class="material-symbols-outlined text-[16px]">close</span>
-                                        </button>
-                                    </div>
-                                    <div class="flex items-center gap-1 bg-primary/10 dark:bg-primary/20 text-primary px-3 py-1 rounded-full text-sm font-semibold">
-                                        #Adventure
-                                        <button class="hover:text-primary/70 transition-colors flex items-center">
-                                            <span class="material-symbols-outlined text-[16px]">close</span>
-                                        </button>
-                                    </div>
-                                    <!-- Input -->
-                                    <input class="flex-1 bg-transparent border-none outline-none text-slate-900 dark:text-white text-sm min-w-[120px]" placeholder="Add a tag and press Enter" type="text" />
+                                <?php
+                                $tags = Tag::getAllTags();
+                                ?>
+                                <select name="tag[]" multiple size="6" class="form-select [scrollbar-width:none] w-full rounded-lg border-2 border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-900 dark:text-white px-4 py-3 text-sm font-medium focus:outline-0 focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all hover:border-slate-300 dark:hover:border-slate-600 shadow-sm">
+                                    <?php foreach ($tags as $tag): ?>
+                                        <option value="<?= $tag->id_tag ?>" class="py-2 px-2 hover:bg-primary/10 cursor-pointer rounded"><?= $tag->titre ?></option>
+                                    <?php endforeach; ?>
+                                </select>
+                                <div class="flex items-start gap-2 bg-slate-50 dark:bg-slate-800/50 p-3 rounded-lg border border-slate-200 dark:border-slate-700">
+                                    <span class="material-symbols-outlined text-primary text-[18px] mt-0.5">info</span>
+                                    <p class="text-slate-600 dark:text-slate-400 text-xs leading-relaxed">
+                                        Hold <kbd class="px-1.5 py-0.5 bg-white dark:bg-slate-700 border border-slate-300 dark:border-slate-600 rounded text-xs font-mono">Ctrl</kbd> (or <kbd class="px-1.5 py-0.5 bg-white dark:bg-slate-700 border border-slate-300 dark:border-slate-600 rounded text-xs font-mono">Cmd</kbd> on Mac) while clicking to select multiple tags
+                                    </p>
                                 </div>
-                                <p class="text-slate-500 dark:text-slate-400 text-xs">Suggested: #Summer, #Family, #Convertible, #OffRoad</p>
                             </div>
                         </div>
                         <!-- Action Bar -->
                         <div class="pt-6 border-t border-slate-100 dark:border-slate-800 flex flex-col-reverse sm:flex-row justify-end gap-4">
-                            <button class="flex items-center justify-center h-12 px-6 rounded-lg border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-200 font-bold text-sm bg-transparent hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors">
-                                Save Draft
-                            </button>
-                            <button class="flex items-center justify-center gap-2 h-12 px-8 rounded-lg bg-primary text-white font-bold text-sm shadow-md hover:bg-blue-600 transition-colors">
+
+                            <button type="submit" class="flex items-center justify-center gap-2 h-12 px-8 rounded-lg bg-primary text-white font-bold text-sm shadow-md hover:bg-blue-600 transition-colors">
                                 <span class="material-symbols-outlined text-[20px]">send</span>
                                 Submit Article
                             </button>
                         </div>
-                    </div>
-                    <div class="h-12"></div> <!-- Spacer -->
+                    </form>
+                    <div class="h-12"></div>
                 </div>
             </div>
         </div>
