@@ -198,7 +198,7 @@ $themes = Theme::getAllThemes();
                     <div id="themes" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                         <?php foreach ($themes as $theme): ?>
                             <a class="group flex flex-col h-full bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 overflow-hidden hover:shadow-xl hover:shadow-slate-200/50 dark:hover:shadow-black/30 hover:border-primary/50 dark:hover:border-primary/50 transition-all duration-300"
-                                href="#">
+                                href="./ArticlesList.php?id_theme=<?= $theme->id_theme ?>">
                                 <div class="h-32 bg-slate-200 bg-cover bg-center relative"
                                     data-alt="Scenic winding mountain road with autumn trees"
                                     style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCR1pW3vHaRCSsUWktx4KYdZ4JVrqU6beeiiN3KfgvrMM543NDUoielVaDbmJ37WykHRTmS86Y3a8PN04oEM2mMFGTEHt8Su9XZ3iyZRkRh6D7vTfgp3RrCzZkIe8URaLPJCVNvDO_NRLgtHXz-b8tQPnDR7Miwf3g48sU6vHmriPdxVkm7j6LmSw9LYlYxVt5MoDN_pTVgm-xRg3huFYcAtGTf8jHTS2Ja5g87MASRce5fdFcq81aLoEQVJfspji3xTz1se366IKs");'>
@@ -308,6 +308,9 @@ $themes = Theme::getAllThemes();
             </div>
         </div>
     </footer>
+    <script>
+        
+    </script>
 </body>
 
 </html>
