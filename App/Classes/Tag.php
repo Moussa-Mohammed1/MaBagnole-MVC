@@ -60,4 +60,14 @@ class Tag
         return $st->execute() ? $st->fetchAll(PDO::FETCH_OBJ) : null;
     }
 
+    public static function getTagById(int $id_tag): ?Tag
+    {
+        $pdo = Database::getInstance()->getConnection();
+        $sql = 'SELECT * FROM tag WHERE id_tag = ?';
+        $st = $pdo->prepare($sql);
+        $st->execute([$id_tag]);
+        $data = $st->fetch(PDO::FETCH_OBJ);
+        return $date ?? null;
+    }
+
 }
