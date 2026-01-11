@@ -34,7 +34,7 @@ class ArticleTags
         $pdo = Database::getInstance()->getConnection();
         $sql = "SELECT t.titre, t.id_tag FROM tag t 
                 INNER JOIN article_tag art ON t.id_tag = art.id_tag 
-                WHERE at.id_article = ?";
+                WHERE art.id_article = ?";
         $tagStmt = $pdo->prepare($sql);
         $tagStmt->execute([$id_article]);
         $tags = $tagStmt->fetchAll(PDO::FETCH_OBJ);
