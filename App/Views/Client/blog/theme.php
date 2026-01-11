@@ -5,7 +5,10 @@ use App\Classes\Theme;
 session_start();
 require_once __DIR__ . '/../../../../vendor/autoload.php';
 $logged = $_SESSION['logged'];
-
+if (!isset($logged)) {
+    header('Location: ./../../auth/login.php');
+    exit();
+}
 $themes = Theme::getAllThemes();
 ?>
 
@@ -211,7 +214,7 @@ $themes = Theme::getAllThemes();
                                         <?= $theme->titre ?></h3>
                                     <div
                                         class="mt-auto pt-4 border-t border-slate-100 dark:border-slate-700 flex justify-between items-center">
-                                        <span class="text-xs font-semibold text-slate-400"><?= $theme->articles ?></span>
+                                        <span class="text-xs font-semibold text-slate-400"><?= isset($theme->articles) ? $theme->articles : '0' ?> Articles</span>
                                         <span
                                             class="material-symbols-outlined text-slate-300 group-hover:translate-x-1 transition-transform text-[18px]">arrow_forward</span>
                                     </div>
