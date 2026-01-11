@@ -48,7 +48,7 @@ class Comment
         $pdo = Database::getInstance()->getConnection();
         $sql = 'UPDATE comment SET texte = ? WHERE id_comment = ?';
         $st = $pdo->prepare($sql);
-        if ($st->execute($texte, $id_comment)) {
+        if ($st->execute([$texte, $id_comment])) {
             return true;
         } else {
             return false;
@@ -70,7 +70,11 @@ class Comment
     public static function getCommentByArticle($id_article): ?array
     {
         $pdo = Database::getInstance()->getConnection();
-        $sql = 'SELECT * FROM comment WHERE id_article = ?';
+        $sql = 'SELECT c.*, u.nom AS user_name 
+                FROM comment c
+                LEFT JOIN utilisateur u ON c.id_client = u.id_user
+                WHERE c.id_article = ? AND c.deleted_at IS NULL
+                ORDER BY c.created_at DESC';
         $st = $pdo->prepare($sql);
         if ($st->execute([$id_article])) {
             return $st->fetchAll(PDO::FETCH_OBJ);
@@ -79,7 +83,8 @@ class Comment
         }
     }
 
-    public static function getAllComments() : ?array {
+    public static function getAllComments(): ?array
+    {
         $pdo = Database::getInstance()->getConnection();
         $sql = 'SELECT c.*, u.nom, u.email, a.titre AS article
                 FROM comment c
