@@ -1,65 +1,85 @@
 <?php
-require_once __DIR__ . '/../../vendor/autoload.php';
+
+namespace App\Controllers;
 
 use App\Classes\Utilisateur;
 
-session_start();
+class AuthController
+{
+    public function index()
+    {
+        require_once __DIR__ . '/../Views/auth/login.php';
+    }
+    public function login(): void
+    {
+        session_start();
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            $old = $_POST;
+            $email = trim($_POST['email']) ?? '';
+            $password = trim($_POST['password']) ?? '';
 
-$action = $_GET['action'] ?? '';
-$old = [];
+            if (!empty($email) && !empty($password)) {
+                $user = Utilisateur::login($email, $password);
 
-if ($action == 'login') {
-    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-        $old = $_POST;
-        $email = trim($_POST['email']) ?? '';
-        $password = trim($_POST['password']) ?? '';
+                if ($user !== null) {
+                    $_SESSION['logged'] = $user;
 
-        if (!empty($email) && !empty($password)) {
-            $user = Utilisateur::login($email, $password);
-
-            if ($user !== null) {
-                $_SESSION['logged'] = $user;
-
-                if ($user->role == 'admin') {
-                    header('Location: ./../Views/Admin/dashboard.php');
+                    if ($user->role == 'admin') {
+                        header('Location: /MaBagnole-MVC/Admin');
+                    } else {
+                        header('Location: /MaBagnole-MVC/cars');
+                    }
+                    exit();
                 } else {
-                    header('Location: ./../Views/Client/cars.php');
+                    $_SESSION['old'] = $old;
+                    $_SESSION['error'] = 'Email or password are incorrect';
+                    header('Location: /MaBagnole-MVC/Auth/login');
+                    exit();
                 }
-                exit();
-            } else {
+            } elseif (empty($password)) {
+                $_SESSION['empty'] = 'Email or password cannot be empty';
                 $_SESSION['old'] = $old;
-                $_SESSION['error'] = 'Email or password are incorrect';
-                header('Location: ./../Views/auth/login.php');
+
+                header('Location: /MaBagnole-MVC/Auth/login');
                 exit();
             }
-        } elseif (empty($password)) {
-            $_SESSION['empty'] = 'Email or password cannot be empty';
-            $_SESSION['old'] = $old;
-
-            header('Location: ./../Views/auth/login.php');
-            exit();
+        } else {
+            require_once __DIR__ . '/../Views/auth/login.php';
         }
     }
-} elseif ($action == 'register') {
-    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-        $old = $_POST;
-        $nom = trim($_POST['nom']) ?? '';
-        $email = trim($_POST['email']) ?? '';
-        $password = trim($_POST['password']) ?? '';
 
-        $checkValidation = Utilisateur::validateForm($nom, $email);
+    public function register(): void
+    {
+        if (session_status() === PHP_SESSION_NONE) session_start();
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            $old = $_POST;
+            $nom = trim($_POST['nom']) ?? '';
+            $email = trim($_POST['email']) ?? '';
+            $password = trim($_POST['password']) ?? '';
 
-        if ($checkValidation !== null) {
-            $_SESSION['errors'] = $checkValidation;
-            $_SESSION['old'] = $old;
-            header('Location: ./../Views/auth/register.php');
+            $checkValidation = Utilisateur::validateForm($nom, $email);
+
+            if ($checkValidation !== null) {
+                $_SESSION['errors'] = $checkValidation;
+                $_SESSION['old'] = $old;
+                header('Location: /MaBagnole-MVC/Auth/register');
+            } else {
+                $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+                $newUser = new Utilisateur($nom, $email, $hashedPassword);
+                $newUser->signUp();
+                header('Location: /MaBagnole-MVC/Auth/login');
+            }
             exit();
         } else {
-            $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
-            $newUser = new Utilisateur($nom, $email, $hashedPassword);
-            $newUser->signUp();
-            header('Location: ./../Views/auth/login.php');
-            exit();
+            require_once __DIR__ . '/../Views/auth/register.php';
         }
+    }
+
+    public function logout(): void
+    {
+        session_start();
+        session_destroy();
+        header('Location: /MaBagnole-MVC/Auth');
+        exit();
     }
 }
